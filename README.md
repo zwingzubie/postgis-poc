@@ -29,6 +29,7 @@ python scripts/seed_data.py
 # Or override counts
 VEHICLE_COUNT=80000 GEOFENCE_COUNT=150000 python scripts/seed_data.py
 ```
+Geofences are irregular polygons (not simple boxes) generated with varied radii around random US centroids.
 
 Data model highlights:
 - `vehicles` with VIN, make, model, license plate, metadata
@@ -64,15 +65,23 @@ python scripts/find_vehicles_in_geofence.py --name "Central Seattle Zone" --limi
 # output includes query time at the end
 ```
 
+## Fuzzy search vehicles (VIN or plate)
+```bash
+python scripts/find_vehicle_fuzzy.py --vin ABC123 --limit 5
+python scripts/find_vehicle_fuzzy.py --plate XYZ --limit 10
+```
+
 ## Move vehicles into a geofence
 ```bash
 python scripts/move_vehicles_into_geofence.py --geofence-id 123 --count 50
 ```
 
-## Fuzzy search vehicles (VIN or plate)
+## Wipe and reseed
 ```bash
-python scripts/find_vehicle_fuzzy.py --vin ABC123 --limit 5
-python scripts/find_vehicle_fuzzy.py --plate XYZ --limit 10
+# Truncate vehicles/geofences (prompts for yes unless --force)
+python scripts/wipe_data.py
+# Immediately reseed
+python scripts/seed_data.py
 ```
 
 You can also run ad-hoc SQL (requires psql):

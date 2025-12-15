@@ -8,6 +8,7 @@ Defaults:
 
 You can override counts via VEHICLE_COUNT and GEOFENCE_COUNT env vars.
 """
+import math
 import os
 import random
 import sys
@@ -79,15 +80,18 @@ def random_point():
 
 
 def random_polygon():
+    # Build an irregular but valid polygon by jittering radius per vertex.
     lat, lon = random_point()
-    size = random.uniform(0.01, 0.12)  # roughly 1-12km squares
-    coords = [
-        (lon - size, lat - size),
-        (lon + size, lat - size),
-        (lon + size, lat + size),
-        (lon - size, lat + size),
-        (lon - size, lat - size),
-    ]
+    vertex_count = random.randint(8, 14)
+    base_radius = random.uniform(0.02, 0.12)  # degrees; ~2-13km half-span
+    angles = sorted(random.uniform(0, 2 * math.pi) for _ in range(vertex_count))
+    coords = []
+    for angle in angles:
+        radius = base_radius * random.uniform(0.5, 1.2)
+        x = lon + radius * math.cos(angle)
+        y = lat + radius * math.sin(angle)
+        coords.append((x, y))
+    coords.append(coords[0])  # close ring
     coord_str = ", ".join(f"{x} {y}" for x, y in coords)
     return f"POLYGON(({coord_str}))"
 
