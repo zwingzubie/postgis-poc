@@ -44,6 +44,15 @@ python scripts/update_positions.py
 python scripts/update_positions.py --loop --interval 300
 ```
 
+## Busiest geofences
+```bash
+# top N geofences by vehicle count (shows query time)
+python scripts/top_geofence_by_vehicles.py --top 3 --sample 2
+
+# loop every minute
+python scripts/top_geofence_by_vehicles.py --top 5 --sample 1 --loop --interval 60
+```
+
 ## Find vehicles inside a geofence
 ```bash
 # by id
@@ -51,6 +60,19 @@ python scripts/find_vehicles_in_geofence.py --geofence-id 123 --limit 20
 
 # fuzzy by name (pg_trgm)
 python scripts/find_vehicles_in_geofence.py --name "Central Seattle Zone" --limit 20
+
+# output includes query time at the end
+```
+
+## Move vehicles into a geofence
+```bash
+python scripts/move_vehicles_into_geofence.py --geofence-id 123 --count 50
+```
+
+## Fuzzy search vehicles (VIN or plate)
+```bash
+python scripts/find_vehicle_fuzzy.py --vin ABC123 --limit 5
+python scripts/find_vehicle_fuzzy.py --plate XYZ --limit 10
 ```
 
 You can also run ad-hoc SQL (requires psql):
